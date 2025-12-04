@@ -1,13 +1,17 @@
 // --- STATE MANAGEMENT & INIT ---
 let apiKey = localStorage.getItem('gemini_key') || '';
+let converter = null; // Showdown converter instance
 
 document.addEventListener('DOMContentLoaded', () => {
     if(apiKey) document.getElementById('apiKeyInput').value = apiKey;
-    // Set a placeholder message on load
-    document.getElementById('outputContainer').innerHTML = 'Paste your text above and click "Enhance" to see the full transformation list.';
+    // Initialize the Showdown converter once
+    if (typeof showdown !== 'undefined') {
+        converter = new showdown.Converter();
+    }
+    document.getElementById('rationaleBox').classList.add('hidden');
 });
 
-// --- SETTINGS ---
+// --- UTILITIES ---
 function toggleSettings() {
     const panel = document.getElementById('settings-panel');
     panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
@@ -19,10 +23,108 @@ function saveKey() {
     if(apiKey) toggleSettings();
 }
 
-// --- GEMINI SYSTEM PROMPT (Derived directly from your instructions) ---
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+    } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert("Copied to clipboard!");
+    }
+}
+
+function shareText(title, text) {
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text
+        }).catch((error) => console.error('Error sharing', error));
+    } else {
+        copyToClipboard(text);
+        alert("Share API not available. Text copied to clipboard instead!");
+    }
+}
+
+// --- PARSING & RENDERING LOGIC ---
+
+/**
+ * Parses the single Markdown output string from the AI into a structured JS object.
+ * Uses regex to extract the Rationale and the content within each triple-backtick block.
+ * @param {string} text - The raw markdown output from the Gemini API.
+ * @returns {object} - { rationale: string, transformations: [{title: string, content: string}, ...] }
+ */
+function parseMarkdownOutput(text) {
+    const data = {
+        rationale: '',
+        transformations: []
+    };
+
+    // 1. Extract Rationale
+    const rationaleMatch = text.match(/\*\*Rationale:\*\*([\s\S]*?)(?=###)/);
+    if (rationaleMatch) {
+        data.rationale = rationaleMatch[1].trim();
+    }
+
+    // 2. Extract Transformations (Headers and Code Blocks)
+    // Regex matches: ### Title\n```\nContent\n```
+    const categoryRegex = /###\s*([^\n]+)[\s\S]*?\n```\s*([\s\S]*?)\n```/g;
+    let match;
+
+    while ((match = categoryRegex.exec(text)) !== null) {
+        // match[1] is the title (e.g., Proofread)
+        // match[2] is the content inside the code block
+        data.transformations.push({
+            title: match[1].trim(),
+            content: match[2].trim()
+        });
+    }
+
+    return data;
+}
+
+/**
+ * Renders the parsed data into the dynamic card grid.
+ * @param {object} data - The structured data from parseMarkdownOutput.
+ */
+function renderCards(data) {
+    const cardGrid = document.getElementById('cardGrid');
+    const rationaleContent = document.getElementById('rationaleContent');
+    const rationaleBox = document.getElementById('rationaleBox');
+
+    cardGrid.innerHTML = '';
+    
+    // Set Rationale
+    rationaleContent.innerText = data.rationale;
+    rationaleBox.classList.remove('hidden');
+
+    // Render Cards
+    data.transformations.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'transformation-card';
+
+        // NOTE: The content is already clean text (no markdown) from the parsing step
+        const cardContentText = t.content; 
+        
+        card.innerHTML = `
+            <div class="card-title">${t.title}</div>
+            <div class="card-content" id="content-${t.title.replace(/\s/g, '')}">${cardContentText}</div>
+            <div class="card-actions">
+                <button onclick="copyToClipboard(document.getElementById('content-${t.title.replace(/\s/g, '')}').innerText)">📋 Copy</button>
+                <button class="secondary" onclick="shareText('${t.title} (0FluffText)', document.getElementById('content-${t.title.replace(/\s/g, '')}').innerText)">📤 Share</button>
+            </div>
+        `;
+        cardGrid.appendChild(card);
+    });
+}
+
+// --- GEMINI SYSTEM PROMPT (Remains the same) ---
 function getSystemPrompt(userInput) {
-    // This detailed prompt forces the model to act as the "Smart Text Enhancement Tool"
-    // and handle the analysis, prioritization, and structured output entirely on the server side.
+    // ... [Prompt remains the same] ...
     const systemInstructions = `
 [Role & Goal]
 You are a "Smart Text Enhancement Tool." Your sole purpose is to take any text the user provides and treat it as raw material to be transformed. You must generate a comprehensive list of transformations for the user's complete input. You are a direct tool, not a conversational partner.
@@ -87,7 +189,7 @@ Your operation follows a strict, non-negotiable four-step process for every user
     return systemInstructions;
 }
 
-// --- CORE HANDLER ---
+// --- MAIN CONTROLLER (Updated to use new parsing and rendering) ---
 async function enhanceText() {
     const inputEl = document.getElementById('rawInput');
     const input = inputEl.value.trim();
@@ -98,10 +200,12 @@ async function enhanceText() {
         return;
     }
 
-    const outputContainer = document.getElementById('outputContainer');
+    const outputContainer = document.getElementById('cardGrid'); // Changed reference to the new grid
     const loadingEl = document.getElementById('loading');
     
     outputContainer.innerHTML = '';
+    document.getElementById('rationaleBox').classList.add('hidden'); // Hide until content is ready
+
     loadingEl.classList.remove('hidden');
     loadingEl.innerText = "Editor is analyzing and transforming...";
 
@@ -125,21 +229,26 @@ async function enhanceText() {
 
         const resultText = data.candidates[0].content.parts[0].text;
         
-        // Use a DOM parser to render the returned Markdown into HTML
-        // This relies on the Showdown.js library being loaded in index.html
-        const converter = new showdown.Converter();
-        outputContainer.innerHTML = converter.makeHtml(resultText);
+        // 1. Parse the text into a structured object
+        const parsedData = parseMarkdownOutput(resultText);
+
+        // 2. Render the structured object as cards
+        renderCards(parsedData);
 
     } catch (e) {
         alert("Error: " + e.message);
-        outputContainer.innerHTML = `<p style="color:var(--accent);">ERROR: ${e.message}</p>`;
+        document.getElementById('rationaleContent').innerText = `ERROR: ${e.message}`;
+        document.getElementById('rationaleBox').classList.remove('hidden');
         console.error(e);
     } finally {
         loadingEl.classList.add('hidden');
     }
 }
 
+
 // Expose functions globally for HTML binding
 window.toggleSettings = toggleSettings;
 window.saveKey = saveKey;
 window.enhanceText = enhanceText;
+window.copyToClipboard = copyToClipboard;
+window.shareText = shareText;
