@@ -34,12 +34,13 @@
     <div id="loading" class="hidden">Editor is analyzing and transforming...</div>
 
     <div class="results-area">
-        <div class="result-box">
-            <h3 style="color:var(--accent); margin-top: 0;">Output</h3>
-            <div id="outputContainer" class="output-text">
-                The transformed text, with its structured Markdown, will appear here.
-            </div>
+        <div id="rationaleBox" class="result-box hidden">
+            <h3 style="color:var(--accent); margin-top: 0;">Analysis Rationale</h3>
+            <p id="rationaleContent" class="output-text"></p>
+            <button class="secondary" onclick="copyToClipboard(document.getElementById('rationaleContent').innerText)">📋 Copy Rationale</button>
         </div>
+        <div id="cardGrid">
+            </div>
     </div>
 </div>
 
