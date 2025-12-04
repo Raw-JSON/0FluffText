@@ -1,4 +1,4 @@
-## 0FluffText
+### 0FluffText ✨✍️
 **Concise & Creative Editor. Structured output, zero filler.**
 
 A minimalist, pure client-side web utility that employs the Gemini API to analyze, prioritize, and transform any text input into six distinct, structured output versions.
