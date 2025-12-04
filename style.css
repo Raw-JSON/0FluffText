@@ -1,0 +1,139 @@
+:root {
+    --bg: #000000;
+    --card: #141418;
+    --text: #ffffff;
+    --accent: #00c49a; /* New accent color for 'Smart' utility */
+    --dim: #888;
+    --border: #333;
+    --card-hover: #1e1e24;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography & Layout */
+h1 { 
+    margin-bottom: 5px; 
+    letter-spacing: -1px; 
+    font-size: 2.2rem;
+}
+
+.subtitle { 
+    color: var(--dim); 
+    font-size: 0.95rem; 
+    margin-bottom: 30px; 
+    font-weight: 400;
+}
+
+.container { 
+    width: 100%; 
+    max-width: 700px; 
+    padding-bottom: 40px; 
+}
+
+/* Inputs & Buttons */
+input, textarea, button {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: var(--card);
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--accent);
+    background: var(--card-hover);
+}
+textarea::placeholder {
+    color: var(--dim);
+}
+textarea { resize: vertical; min-height: 100px; }
+
+
+button {
+    background: var(--accent);
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    color: var(--bg);
+}
+
+button:active { transform: scale(0.96); }
+
+button.icon-btn { 
+    width: auto; 
+    padding: 10px; 
+    margin: 0; 
+    background: transparent;
+    color: var(--text);
+}
+
+.action-row { 
+    display: flex; 
+    gap: 12px; 
+    margin-bottom: 15px; 
+}
+
+/* Settings Panel */
+#settings-panel { 
+    display: none; 
+    background: #111;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 25px; 
+    border: 1px solid var(--border); 
+}
+
+/* Results & Output */
+.results-area {
+    margin-top: 20px;
+}
+
+.result-box {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.output-text {
+    line-height: 1.6;
+    margin-top: 10px;
+    color: var(--text);
+}
+
+/* Loading State */
+#loading {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--accent);
+    text-align: center;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.hidden { display: none !important; }
