@@ -83,6 +83,9 @@ button.icon-btn {
     background: transparent;
     color: var(--text);
 }
+button.icon-btn svg { /* Ensure SVGs use the text color */
+    stroke: currentColor;
+}
 button.secondary { 
     background: var(--card-hover); 
     border: 1px solid var(--border);
@@ -105,6 +108,20 @@ button.secondary {
     margin-bottom: 25px; 
     border: 1px solid var(--border); 
 }
+
+button.github-btn {
+    background: #24292e; /* GitHub Brand Color */
+    color: white;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+button.github-btn svg {
+    stroke: white;
+}
+
 
 /* Results & Output */
 .results-area {
