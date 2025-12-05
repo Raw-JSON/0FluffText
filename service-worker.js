@@ -6,7 +6,7 @@ const urlsToCache = [
     'script.js',
     'style.css',
     'manifest.json',
-    'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js' // External dependency
+    'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js' // External dependency added here
 ];
 
 self.addEventListener('install', (event) => {
