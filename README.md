@@ -5,11 +5,6 @@ A tight, minimalist, client-side tool powered by the Gemini API that flips any c
 
 ---
 
-## 📸 Screenshot
-<img width="1280" height="2856" alt="Image" src="https://github.com/user-attachments/assets/559c1b2e-c738-4df9-9c01-4747fa6db2ef" />
-
----
-
 ## 🚀 Core Architectural Philosophy
 
 ### 1. Zero-Friction / Pure Client-Side
