@@ -23,10 +23,23 @@
     </div>
 
     <div id="settings-panel">
+        <h3 style="margin-top:0; color:var(--text);">API Configuration</h3>
         <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 5px;">Gemini API Key:</p>
-        <input type="password" id="apiKeyInput" placeholder="sk-..." onchange="saveKey()">
+        <input type="password" id="apiKeyInput" placeholder="sk-..." onchange="saveSettings()">
+        
+        <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+            <h3 style="margin-top:0; color:var(--text);">Custom Style</h3>
+            <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 5px;">Create your own transformation category.</p>
+            
+            <label style="font-size:0.8rem; color:var(--accent);">Style Name (e.g., "Pirate", "Legal"):</label>
+            <input type="text" id="customStyleName" placeholder="My Custom Style" onchange="saveSettings()">
+            
+            <label style="font-size:0.8rem; color:var(--accent);">Instructions:</label>
+            <textarea id="customStylePrompt" rows="2" style="min-height:60px;" placeholder="e.g. Rewrite this like a 17th century pirate..." onchange="saveSettings()"></textarea>
+        </div>
+
         <p style="font-size:0.8rem; color:var(--dim); margin-top: 15px;">
-            <small>⚠️ Key is saved locally. Zero servers. Zero tracking.</small>
+            <small>⚠️ Data saved locally. Zero servers. Zero tracking.</small>
         </p>
         
         <button class="secondary github-btn" onclick="window.open('https://github.com/Raw-JSON/0FluffText/issues', '_blank')">
@@ -37,7 +50,10 @@
         </button>
     </div>
 
-    <textarea id="rawInput" rows="5" placeholder="Paste the text you want to enhance or fix..."></textarea>
+    <div class="input-wrapper">
+        <textarea id="rawInput" rows="5" placeholder="Paste the text you want to enhance or fix..."></textarea>
+        <button class="clear-btn" onclick="clearInput()" title="Clear text">✕</button>
+    </div>
     
     <div class="action-row">
         <button onclick="enhanceText()">
@@ -57,6 +73,8 @@
             </div>
     </div>
 </div>
+
+<div id="toast" class="hidden">Notification</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
 <script src="script.js"></script>
