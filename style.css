@@ -42,6 +42,12 @@ h1 {
 }
 
 /* Inputs & Buttons */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
 input, textarea, button {
     width: 100%;
     padding: 16px;
@@ -89,6 +95,29 @@ button.icon-btn svg { /* Ensure SVGs use the text color */
 button.secondary { 
     background: var(--card-hover); 
     border: 1px solid var(--border);
+    color: var(--text);
+}
+
+/* Clear Button (The X) */
+button.clear-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: var(--dim);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+button.clear-btn:hover {
+    background: rgba(255,255,255,0.2);
     color: var(--text);
 }
 
@@ -201,6 +230,28 @@ button.github-btn svg {
     0% { opacity: 0.6; }
     50% { opacity: 1; }
     100% { opacity: 0.6; }
+}
+
+/* Toast Notification */
+#toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    opacity: 0;
+}
+#toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
 .hidden { display: none !important; }
