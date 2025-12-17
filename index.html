@@ -25,17 +25,20 @@
     <div id="settings-panel">
         <h3 style="margin-top:0; color:var(--text);">API Configuration</h3>
         <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 5px;">Gemini API Key:</p>
-        <input type="password" id="apiKeyInput" placeholder="sk-..." onchange="saveSettings()">
+        <input type="password" id="apiKeyInput" placeholder="sk-..." onchange="saveApiKey()">
         
         <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
-            <h3 style="margin-top:0; color:var(--text);">Custom Style</h3>
-            <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 5px;">Create your own transformation category.</p>
+            <h3 style="margin-top:0; color:var(--text);">Style Library (Max 5)</h3>
+            <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 10px;">Add custom profiles (e.g., "Legalese", "Pirate").</p>
             
-            <label style="font-size:0.8rem; color:var(--accent);">Style Name:</label>
-            <input type="text" id="customStyleName" placeholder="e.g., Pirate, Legalese" onchange="saveSettings()">
-            
-            <label style="font-size:0.8rem; color:var(--accent);">Instructions:</label>
-            <textarea id="customStylePrompt" rows="2" style="min-height:60px;" placeholder="e.g., Rewrite this using nautical terms..." onchange="saveSettings()"></textarea>
+            <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:15px;">
+                <input type="text" id="newStyleName" placeholder="Style Name (e.g. Roasting)" style="margin-bottom:8px;">
+                <textarea id="newStylePrompt" rows="2" style="min-height:50px; margin-bottom:8px;" placeholder="Instructions (e.g. Make it sarcastic...)"></textarea>
+                <button onclick="addStyle()" class="secondary" style="width:100%;">+ Add Style</button>
+            </div>
+
+            <div id="styleListContainer">
+                </div>
         </div>
 
         <p style="font-size:0.8rem; color:var(--dim); margin-top: 15px;">
