@@ -1,46 +1,44 @@
-# 0FluffText ✨✍️
-> **No filler. No waffle. Just clean, structured text transformations.**
+# 0FluffText ✨🎓
+> **Stop guessing. Start learning. The minimalist editor that teaches you to write better.**
 
-> A tight, minimalist, client-side tool powered by the Gemini API that flips any chunk of text into **seven refined versions** instantly — no fluff, no rambling, no drama.
-
----
-
-## 🚀 Core Architectural Philosophy
-
-### 1. Zero-Friction / Pure Client-Side
-- **Single dependency:** Gemini API only. No random CDN requests, no proxies, no backend circus.
-- **Instant response:** Everything processes in your browser for straight-up max performance.
-
-### 2. Privacy & Control (BYO Key)
-- **Your Key, Your Storage:** API key lives *only* in local storage.  
-- **Your Text Stays Local:** Nothing gets uploaded. Nothing gets logged. Nothing leaves your device.
+**0FluffText** is a privacy-first, client-side writing engine. It doesn't just transform your text into seven distinct styles—it identifies your writing weaknesses and explains the "why" behind every correction.
 
 ---
 
-## ✨ What's New in v1.2.0
+## 🚀 What's New in v1.3.1 (The Modular Era)
 
-* **Customizable Style Category:** Define your own unique transformation (e.g., "Pirate Mode", "Technical Jargon") in the settings panel. This is injected dynamically, expanding the output to seven transformation cards.
-* **Zero-Block UX:** Native browser alerts have been replaced with non-intrusive **Toast Notifications** for a smoother, block-free experience.
-* **Quick Clear:** A dedicated '✕' button now sits in the input box for rapid text clearing.
+### 🎓 The Coach's Critique
+We’ve moved beyond simple "fixing." Every time you enhance text, the AI acts as a writing mentor, isolating issues like passive voice, hedging, or redundancy, and providing a brief educational lesson.
+
+### 📚 Style Library (P1 Feature)
+You are no longer limited to one custom style. You can now save up to **5 custom transformation profiles** (e.g., "Sarcastic Roaster," "Legal Tech," "Nautical Pirate") directly in your browser.
+
+### 🏗️ 0Fluff Architecture
+The codebase has been refactored for "0Fluff" efficiency:
+- **`engine.js`**: The brains. Handles prompt engineering and API logic.
+- **`app.js`**: The hands. Manages the UI, state, and local storage.
+- **`service-worker.js`**: PWA support with intelligent cache versioning.
 
 ---
 
-## 🛠 Quick Setup (Bring Your Own Key)
+## 🛠 Setup & Usage
 
-1. Grab a free key from **Google AI Studio**.  
-2. Open **0FluffText**, smash the **Gear ⚙️**, paste the key.  
-3. **Optional:** Define a **Custom Style** in settings to extend the transformation utility.
-4. Paste any messy text into the box → hit **Enhance Text** → get instant, structured Markdown output.
+1. **BYOK (Bring Your Own Key):** Get a free Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. **Configure:** Open Settings (⚙️) and paste your key.
+3. **Build Your Library:** Add custom styles with specific instructions.
+4. **Enhance:** Paste text, hit the button, and read the **Coach's Critique** before choosing your favorite transformation.
 
 ---
 
-## 💡 Transformation Logic
-0FluffText runs a priority engine that fixes the biggest problem first — **Errors → Complexity → Verbosity**. The transformation categories are now **dynamically extensible** by the user via settings, maximizing utility. It outputs everything as clean Markdown blocks for easy copy/paste.
+## 🔒 Privacy Protocol
+- **Zero Servers:** Your text never touches a middleman server.
+- **Local Storage:** Your API key and Style Library live only on your device.
+- **Zero Tracking:** No analytics, no cookies, no fluff.
 
 ---
 
 ## 📄 License
-[MIT License](LICENSE). Open source forever.
+[MIT License](LICENSE). Open source forever. Part of the **RawJSON** ecosystem.
 
 ---
 
