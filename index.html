@@ -31,11 +31,11 @@
             <h3 style="margin-top:0; color:var(--text);">Custom Style</h3>
             <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 5px;">Create your own transformation category.</p>
             
-            <label style="font-size:0.8rem; color:var(--accent);">Style Name (e.g., "Pirate", "Legal"):</label>
-            <input type="text" id="customStyleName" placeholder="My Custom Style" onchange="saveSettings()">
+            <label style="font-size:0.8rem; color:var(--accent);">Style Name:</label>
+            <input type="text" id="customStyleName" placeholder="e.g., Pirate, Legalese" onchange="saveSettings()">
             
             <label style="font-size:0.8rem; color:var(--accent);">Instructions:</label>
-            <textarea id="customStylePrompt" rows="2" style="min-height:60px;" placeholder="e.g. Rewrite this like a 17th century pirate..." onchange="saveSettings()"></textarea>
+            <textarea id="customStylePrompt" rows="2" style="min-height:60px;" placeholder="e.g., Rewrite this using nautical terms..." onchange="saveSettings()"></textarea>
         </div>
 
         <p style="font-size:0.8rem; color:var(--dim); margin-top: 15px;">
@@ -43,10 +43,7 @@
         </p>
         
         <button class="secondary github-btn" onclick="window.open('https://github.com/Raw-JSON/0FluffText/issues', '_blank')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 3c0 0-1.03-.39-3.41 1.05A16.3 16.3 0 0 0 12 2.88 16.3 16.3 0 0 0 7.4 4.04c-2.38-1.44-3.41-1.05-3.41-1.05A5.07 5.07 0 0 0 3.91 4.77 5.44 5.44 0 0 0 4 9.47c0 5.42 3.3 6.61 6.44 7.37-.4.34-.78 1-1.15 2.06v4.31"></path>
-            </svg>
-            Report Issue / View GitHub
+            🐞 Report Issue / View GitHub
         </button>
     </div>
 
@@ -57,29 +54,27 @@
     
     <div class="action-row">
         <button onclick="enhanceText()">
-            ✨ Enhance Text
+            ✨ Enhance & Learn
         </button>
     </div>
     
-    <div id="loading" class="hidden">Editor is analyzing and transforming...</div>
+    <div id="loading" class="hidden">Editor is analyzing, correcting, and preparing your lesson...</div>
 
     <div class="results-area">
-        <div id="rationaleBox" class="result-box hidden">
-            <h3 style="color:var(--accent); margin-top: 0;">Analysis Rationale</h3>
-            <p id="rationaleContent" class="output-text"></p>
-            <button class="secondary" onclick="copyToClipboard(document.getElementById('rationaleContent').innerText)">📋 Copy Rationale</button>
+        <div id="coachBox" class="result-box hidden" style="border-left: 4px solid var(--accent);">
+            <h3 style="color:var(--accent); margin-top: 0;">Coach's Critique 🎓</h3>
+            <p id="coachContent" class="output-text" style="font-style: italic; opacity: 0.9;"></p>
         </div>
-        <div id="cardGrid">
-            </div>
+
+        <div id="cardGrid"></div>
     </div>
 </div>
 
 <div id="toast" class="hidden">Notification</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
-<script src="script.js"></script>
 
-<script>
+<script src="engine.js"></script> <script src="app.js"></script>    <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('service-worker.js')
