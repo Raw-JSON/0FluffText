@@ -2,15 +2,14 @@
 
 // --- STATE ---
 let apiKey = localStorage.getItem('gemini_key') || '';
-let customStyleName = localStorage.getItem('custom_style_name') || '';
-let customStylePrompt = localStorage.getItem('custom_style_prompt') || '';
+// Load Array of Styles
+let customStyles = JSON.parse(localStorage.getItem('custom_styles') || '[]');
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     if(apiKey) document.getElementById('apiKeyInput').value = apiKey;
-    if(customStyleName) document.getElementById('customStyleName').value = customStyleName;
-    if(customStylePrompt) document.getElementById('customStylePrompt').value = customStylePrompt;
     
+    renderStyleList(); // Draw the list on load
     document.getElementById('coachBox').classList.add('hidden');
 });
 
@@ -20,14 +19,80 @@ function toggleSettings() {
     panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
 }
 
-function saveSettings() {
+function saveApiKey() {
     apiKey = document.getElementById('apiKeyInput').value.trim();
-    customStyleName = document.getElementById('customStyleName').value.trim();
-    customStylePrompt = document.getElementById('customStylePrompt').value.trim();
-
     localStorage.setItem('gemini_key', apiKey);
-    localStorage.setItem('custom_style_name', customStyleName);
-    localStorage.setItem('custom_style_prompt', customStylePrompt);
+}
+
+// --- STYLE LIBRARY LOGIC ---
+
+function addStyle() {
+    const nameInput = document.getElementById('newStyleName');
+    const promptInput = document.getElementById('newStylePrompt');
+    const name = nameInput.value.trim();
+    const prompt = promptInput.value.trim();
+
+    if (!name || !prompt) {
+        return showToast("Name and Prompt are required! ⚠️");
+    }
+    
+    if (customStyles.length >= 5) {
+        return showToast("Max 5 styles allowed. Delete one first. 🛑");
+    }
+
+    // Add to array
+    customStyles.push({ name, prompt });
+    
+    // Save to LocalStorage
+    localStorage.setItem('custom_styles', JSON.stringify(customStyles));
+
+    // Clear Inputs
+    nameInput.value = '';
+    promptInput.value = '';
+
+    // Re-render
+    renderStyleList();
+    showToast("Style Added! ✅");
+}
+
+function deleteStyle(index) {
+    customStyles.splice(index, 1);
+    localStorage.setItem('custom_styles', JSON.stringify(customStyles));
+    renderStyleList();
+    showToast("Style Deleted. 🗑️");
+}
+
+function renderStyleList() {
+    const listContainer = document.getElementById('styleListContainer');
+    listContainer.innerHTML = '';
+
+    if (customStyles.length === 0) {
+        listContainer.innerHTML = '<p style="font-size:0.8rem; color:var(--dim); font-style:italic;">No custom styles yet.</p>';
+        return;
+    }
+
+    customStyles.forEach((style, index) => {
+        const item = document.createElement('div');
+        item.style.cssText = `
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        `;
+        
+        item.innerHTML = `
+            <div style="overflow: hidden;">
+                <div style="color: var(--accent); font-weight: bold; font-size: 0.9rem;">${style.name}</div>
+                <div style="color: var(--dim); font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">${style.prompt}</div>
+            </div>
+            <button onclick="deleteStyle(${index})" style="background:none; border:none; cursor:pointer; font-size: 1rem; padding: 5px;">🗑️</button>
+        `;
+        listContainer.appendChild(item);
+    });
 }
 
 function clearInput() {
@@ -92,8 +157,8 @@ async function enhanceText() {
     loadingEl.classList.remove('hidden');
 
     try {
-        // 1. Get Prompt from Engine
-        const prompt = window.Engine.getSystemPrompt(input, customStyleName, customStylePrompt);
+        // 1. Get Prompt from Engine (PASSING THE ARRAY NOW)
+        const prompt = window.Engine.getSystemPrompt(input, customStyles);
         
         // 2. Call API via Engine
         const rawResult = await window.Engine.callGeminiAPI(apiKey, prompt);
@@ -129,7 +194,6 @@ function renderResults(data) {
     data.transformations.forEach(t => {
         const card = document.createElement('div');
         card.className = 'transformation-card';
-        // Clean ID generation
         const safeId = 'content-' + t.title.replace(/[^a-zA-Z0-9]/g, '');
 
         card.innerHTML = `
@@ -144,9 +208,11 @@ function renderResults(data) {
     });
 }
 
-// Expose globals for HTML onclicks
+// Expose globals
 window.toggleSettings = toggleSettings;
-window.saveSettings = saveSettings;
+window.saveApiKey = saveApiKey;
+window.addStyle = addStyle;
+window.deleteStyle = deleteStyle;
 window.enhanceText = enhanceText;
 window.copyToClipboard = copyToClipboard;
 window.shareText = shareText;
