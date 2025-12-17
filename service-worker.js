@@ -1,9 +1,10 @@
-const CACHE_NAME = '0FluffText-v1-2-0-cache';
+const CACHE_NAME = '0FluffText-v1-3-0-cache';
 
 const urlsToCache = [
     './',
     'index.html',
-    'script.js',
+    'engine.js',
+    'app.js',
     'style.css',
     'manifest.json',
     'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js' 
