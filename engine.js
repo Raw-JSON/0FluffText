@@ -2,19 +2,20 @@
 
 /**
  * Constructs the System Prompt with the new "Teacher" persona integration.
+ * NOW SUPPORTS MULTIPLE CUSTOM STYLES.
  */
-function getSystemPrompt(userInput, customName, customPrompt) {
+function getSystemPrompt(userInput, customStyles) {
     
     // Dynamic Custom Category Injection
-    const hasCustom = customName && customPrompt;
     let customInstructionBlock = "";
-    let customPriorityLogic = "";
-    let totalCategories = 7;
-    
-    if (hasCustom) {
-        totalCategories = 8;
-        customInstructionBlock = `* **${customName}:** ${customPrompt}`;
-        customPriorityLogic = `, ${customName}`; 
+    let nextIndex = 8; // Standard categories end at 7
+
+    // Loop through the array of custom styles
+    if (Array.isArray(customStyles) && customStyles.length > 0) {
+        customStyles.forEach(style => {
+            customInstructionBlock += `${nextIndex}. **${style.name}:** ${style.prompt}\n`;
+            nextIndex++;
+        });
     }
 
     const systemInstructions = `
@@ -80,7 +81,6 @@ async function callGeminiAPI(apiKey, prompt) {
 
 /**
  * Parses the raw Markdown into a usable object.
- * Updated to extract the "Coach's Critique".
  */
 function parseMarkdownOutput(text) {
     const data = {
@@ -89,12 +89,10 @@ function parseMarkdownOutput(text) {
     };
 
     // 1. Extract Coach's Critique
-    // Looks for "**Coach's Critique:** ... text ... ###"
     const critiqueMatch = text.match(/\*\*Coach's Critique:\*\*([\s\S]*?)(?=###)/i);
     if (critiqueMatch) {
         data.critique = critiqueMatch[1].trim();
     } else {
-        // Fallback if AI messes up the header format
         const altMatch = text.match(/Critique:([\s\S]*?)(?=###)/i);
         if(altMatch) data.critique = altMatch[1].trim();
     }
@@ -113,7 +111,6 @@ function parseMarkdownOutput(text) {
     return data;
 }
 
-// Export for usage in app.js (simulated module pattern)
 window.Engine = {
     getSystemPrompt,
     callGeminiAPI,
