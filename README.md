@@ -5,22 +5,6 @@
 
 ---
 
-## 🚀 What's New in v1.3.1 (The Modular Era)
-
-### 🎓 The Coach's Critique
-We’ve moved beyond simple "fixing." Every time you enhance text, the AI acts as a writing mentor, isolating issues like passive voice, hedging, or redundancy, and providing a brief educational lesson.
-
-### 📚 Style Library (P1 Feature)
-You are no longer limited to one custom style. You can now save up to **5 custom transformation profiles** (e.g., "Sarcastic Roaster," "Legal Tech," "Nautical Pirate") directly in your browser.
-
-### 🏗️ 0Fluff Architecture
-The codebase has been refactored for "0Fluff" efficiency:
-- **`engine.js`**: The brains. Handles prompt engineering and API logic.
-- **`app.js`**: The hands. Manages the UI, state, and local storage.
-- **`service-worker.js`**: PWA support with intelligent cache versioning.
-
----
-
 ## 🛠 Setup & Usage
 
 1. **BYOK (Bring Your Own Key):** Get a free Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
