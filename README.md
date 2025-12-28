@@ -1,6 +1,6 @@
 # 0FluffText ✨
 
-> A privacy-first, client-side writing engine and PWA. Provides educational feedback via the **Coach’s Critique** while transforming text using the Gemini 3 Flash API.
+> A privacy-first, client-side writing engine and PWA. Provides educational feedback via the **Coach’s Critique** while transforming text using the Gemini API.
 
 ## Features 📝
 - **Coach’s Critique**: Highlights writing weaknesses (passive voice, redundancy) and explains corrections.
@@ -17,7 +17,7 @@
 - **service-worker.js**: PWA asset versioning and offline persistence.
 
 ## Setup 🛠️
-1. Get an API Key from Google AI Studio.
+1. Get an API Key from [Google AI Studio](https://aistudio.google.com).
 2. Add the API Key in Settings.
 3. Start writing.
 
@@ -25,4 +25,4 @@
 All processing occurs client-side. No data is sent to external servers beyond Gemini 3 Flash API calls. LocalStorage stores only user settings and custom styles.
 
 ## License 📄
-MIT
+[MIT](LICENSE)
