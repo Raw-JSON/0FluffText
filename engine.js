@@ -59,7 +59,7 @@ USER TEXT: "${userInput}"
  * Calls the Gemini 3 Flash API with Thinking Mode enabled.
  */
 async function callGeminiAPI(apiKey, prompt) {
-    // Targetting the Gemini 3 Flash model for Pro-level reasoning at Flash speeds
+    // UPDATED: Using the Gemini 3 Flash model
     const modelId = "gemini-3-flash-preview"; 
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
 
@@ -68,9 +68,9 @@ async function callGeminiAPI(apiKey, prompt) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             contents: [{ parts: [{ text: prompt }] }],
-            // NEW: Using 'MEDIUM' thinking for the perfect balance of coach insight and speed
+            // FIX: Corrected to camelCase 'thinkingLevel' and lowercase value 'medium'
             generationConfig: {
-                thinking_level: "MEDIUM" 
+                thinkingLevel: "medium" 
             }
         })
     });
