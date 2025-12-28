@@ -1,5 +1,5 @@
 // 0FluffText Service Worker - v1.4.0
-const CACHE_NAME = '0FluffText-v1-4-0-cache';
+const CACHE_NAME = '0FluffText-v1-4-1-cache';
 
 const urlsToCache = [
     './',
