@@ -15,7 +15,6 @@
 ---
 
 ## 🔒 Privacy Protocol
-- **Zero Servers:** Your text never touches a middleman server.
 - **Local Storage:** Your API key and Style Library live only on your device.
 - **Zero Tracking:** No analytics, no cookies, no fluff.
 
