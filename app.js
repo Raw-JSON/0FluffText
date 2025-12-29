@@ -4,11 +4,16 @@
 let apiKey = localStorage.getItem('gemini_key') || '';
 // Load Array of Styles
 let customStyles = JSON.parse(localStorage.getItem('custom_styles') || '[]');
+// Load NSFW Mode
+let nsfwMode = localStorage.getItem('nsfw_mode') === 'true';
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     if(apiKey) document.getElementById('apiKeyInput').value = apiKey;
     
+    // Set toggle state
+    document.getElementById('nsfwToggle').checked = nsfwMode;
+
     renderStyleList(); // Draw the list on load
     document.getElementById('coachBox').classList.add('hidden');
 });
@@ -17,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleSettings() {
     const panel = document.getElementById('settings-panel');
     panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+
+function toggleNsfwMode() {
+    nsfwMode = document.getElementById('nsfwToggle').checked;
+    localStorage.setItem('nsfw_mode', nsfwMode);
+    
+    // UI Feedback
+    showToast(nsfwMode ? "NSFW Mode Enabled 😈" : "NSFW Mode Disabled 🛡️");
 }
 
 function saveApiKey() {
@@ -157,11 +170,11 @@ async function enhanceText() {
     loadingEl.classList.remove('hidden');
 
     try {
-        // 1. Get Prompt from Engine (PASSING THE ARRAY NOW)
-        const prompt = window.Engine.getSystemPrompt(input, customStyles);
+        // 1. Get Prompt from Engine (PASS nsfwMode)
+        const prompt = window.Engine.getSystemPrompt(input, customStyles, nsfwMode);
         
-        // 2. Call API via Engine
-        const rawResult = await window.Engine.callGeminiAPI(apiKey, prompt);
+        // 2. Call API via Engine (PASS nsfwMode)
+        const rawResult = await window.Engine.callGeminiAPI(apiKey, prompt, nsfwMode);
         
         // 3. Parse via Engine
         const parsedData = window.Engine.parseMarkdownOutput(rawResult);
@@ -210,6 +223,7 @@ function renderResults(data) {
 
 // Expose globals
 window.toggleSettings = toggleSettings;
+window.toggleNsfwMode = toggleNsfwMode;
 window.saveApiKey = saveApiKey;
 window.addStyle = addStyle;
 window.deleteStyle = deleteStyle;
