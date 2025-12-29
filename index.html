@@ -27,6 +27,17 @@
         <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 5px;">Gemini API Key:</p>
         <input type="password" id="apiKeyInput" placeholder="sk-..." onchange="saveApiKey()">
         
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="margin:0; color:var(--text); font-size: 1rem;">NSFW Mode 🔞</h3>
+                <p style="font-size:0.8rem; color:var(--dim); margin:0;">Allow unfiltered profanity & explicit content.</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="nsfwToggle" onchange="toggleNsfwMode()">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
         <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
             <h3 style="margin-top:0; color:var(--text);">Style Library (Max 5)</h3>
             <p style="font-size:0.8rem; color:var(--dim); margin-bottom: 10px;">Add custom profiles (e.g., "Legalese", "Pirate").</p>
